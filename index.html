@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+       #map {
+        height: 700px;
+        width: 100%;
+       }
+       #logo{
+         display: block;
+         margin: 0 auto;
+       }
+    </style>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+  </head>
+  <body>
+    <img src="images/logo.png" id="logo" class="img-responsive img-rounded" alt="Responsive image">
+    <div id="map"></div>
+    <script>
+      function initMap() {
+        var uluru = {lat: 0.386036, lng: 32.553067};
+        var map = new google.maps.Map(document.getElementById('map'), {
+          zoom: 16,
+          center: uluru
+        });
+
+        //Add Marker
+        google.maps.event.addListener(map, 'click', function(event){
+          //add Marker
+          addMarker({coords:event.latLng,
+                    iconImage:"images/dustbin.png",
+                    content:`<form>
+                              <div class="form-group">
+                                <label>Location</label>
+                                <input type="text" class="form-control" placeholder="Location">
+                              </div>
+                              <div class="form-group">
+                                <label>Road</label>
+                                <input type="text" class="form-control" placeholder="Road">
+                              </div>
+                              <div class="form-group">
+                                <label for="image">Upload Image</label>
+                                <input type="file" id="exampleInputFile">
+                                <p class="help-block">Please Upload Image (Optional)</p>
+                              </div>
+                              <div class="form-group">
+                                <textarea class="form-control" rows="3" placeholder="Description"></textarea>
+                              </div>
+                              <button type="submit" class="btn btn-danger">Tag It</button>
+                            </form>`
+          });
+        });
+        var markers = [
+          {coords:{lat: 0.386503, lng: 32.548258}},
+                    
+           {coords:{lat: 0.387700, lng: 32.548300}},
+
+           {coords:{lat: 0.384002, lng: 32.546066}},
+                     
+            {coords:{lat: 0.385000, lng: 32.547000}},
+                      
+           {coords:{lat: 0.386002, lng: 32.556066}},
+                     
+             {coords:{lat: 0.386000, lng: 32.548000}},
+                       
+          {coords:{lat: 0.381459, lng: 32.544006}},
+           {coords:{lat: 0.382002, lng: 32.545066}},
+         {coords:{lat: 0.382144, lng: 32.555692}},
+          {coords:{lat: 0.378586, lng: 32.555660}},
+           {coords:{lat: 0.384002, lng: 32.556066}}
+        ];
+        //loop through markers
+        for(var i = 0; i<markers.length; i++){
+          addMarker(markers[i]);
+        }
+
+
+        //Add Marker function
+        function addMarker(props){
+          var marker = new google.maps.Marker({
+            position: props.coords,
+            map: map,
+            icon:props.iconImage
+          });
+          if(props.content){
+            //create info window
+            var infoWindow = new google.maps.InfoWindow({
+              content:props.content
+            });
+
+            marker.addListener('click', ()=>{
+              infoWindow.open(map, marker);
+            });
+          }
+        }
+      }
+      // var locations = [
+      //   {lat: 0.386503, lng: 32.548258},
+      //   {lat: 0.384002, lng: 32.546066},
+      //   {lat: 0.381459, lng: 32.544006},
+      //   {lat: 0.382144, lng: 32.555692},
+      //   {lat: 0.378586, lng: 32.555660},
+      //   {lat: 0.377170, lng: 32.552388}
+      // ];
+    </script>
+    <script src="js/markerclusterer.js">
+    </script>
+    <script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBcRFrQeGe-PKiYSAmnEbjqpQGYIIfLv18&callback=initMap">
+    </script>
+  </body>
+</html>
